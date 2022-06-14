@@ -2,6 +2,13 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
+# Ignore addressables build data - we just need the bin file to generate it again
+/AddressablesBuilds/Development/ServerData/
+/AddressablesBuilds/Production/ServerData/
+/AddressablesBuilds/[Tt]est/ServerData/
+/AddressablesBuilds/[Dd]ev/ServerData/
+/AddressablesBuilds/[Pp]rod/ServerData/
+/[Aa]ssetBundles/
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
@@ -9,7 +16,6 @@
 /[Bb]uilds/
 /[Ll]ogs/
 /[Mm]emoryCaptures/
-
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
 
@@ -53,8 +59,7 @@ sysinfo.txt
 
 # Builds
 *.apk
-*.unitypackage
+//*.unitypackage
 
 # Crashlytics generated file
 crashlytics-build.properties
-
