@@ -22,7 +22,9 @@ public class TestAPI : MonoBehaviour
         _communicationGateway = GetComponent<CommunicationGateway>();
 
         Vector2 localCoordinates = new Vector2(_localLatitude, -_localLongitude);
-        GPSEncoder.SetLocalOrigin(localCoordinates);
+        var coiso = GPSEncoder.USCToGPS(new Vector3(4315694, 0, -1005808));
+        Debug.Log("COISO " + coiso);
+        GPSEncoder.SetLocalOrigin(coiso);
     }
 
     public void GetGiraStations()
@@ -48,8 +50,8 @@ public class TestAPI : MonoBehaviour
         foreach (var giraStation in giraStations.Features)
         {
             Vector3 spawnLocation = Vector3.zero;
-            string debugText = $"Type {giraStation.Type}\n " +
-                               $"Geometry.Type {giraStation.Geometry.Type}\n";
+            string debugText = $"Type {giraStation.Type}\n "; // +
+            //$"Geometry.Type {giraStation.Geometry.Type}\n";
 
 
             var coordinates = giraStation.Geometry.Coordinates;
@@ -59,22 +61,22 @@ public class TestAPI : MonoBehaviour
                 var lat = coordinate[0];
                 var lon = coordinate[1];
 
-                debugText += $"Geometry.Coordinates Latitude: {lat} Longitude: {lon}\n";
+                //debugText += $"Geometry.Coordinates Latitude: {lat} Longitude: {lon}\n";
 
                 var ucs = GPSEncoder.GPSToUCS(lat, lon);
 
-                spawnLocation = new Vector3(ucs.x / scaleFactor, ucs.y / scaleFactor, ucs.z / scaleFactor);
-                debugText += $"Unity coordinate: {ucs}\n";
+                spawnLocation = new Vector3(ucs.x / scaleFactor*-1, ucs.y / scaleFactor*-1, ucs.z / scaleFactor);
+                //debugText += $"Unity coordinate: {ucs}\n";
             }
 
             debugText += //$"IdExpl {giraStation.Properties.IdExpl}\n" +
                 //$"IdPlaneamento {giraStation.Properties.IdPlaneamento}\n" +
-                $"DesigComercial {giraStation.Properties.DesigComercial}\n" +
-                $"TipoServicoNiveis {giraStation.Properties.TipoServicoNiveis}\n" +
-                $"NumBicicletas {giraStation.Properties.NumBicicletas}\n" +
-                $"NumDocas {giraStation.Properties.NumDocas}\n" +
-                $"Racio {giraStation.Properties.Racio}\n" +
-                $"Estado {giraStation.Properties.Estado}\n";
+                $"DesigComercial {giraStation.Properties.DesigComercial}\n";
+            // $"TipoServicoNiveis {giraStation.Properties.TipoServicoNiveis}\n" +
+            //$"NumBicicletas {giraStation.Properties.NumBicicletas}\n" +
+            //$"NumDocas {giraStation.Properties.NumDocas}\n" +
+            //$"Racio {giraStation.Properties.Racio}\n" +
+            //$"Estado {giraStation.Properties.Estado}\n";
             //$"UpdateDate {giraStation.Properties.UpdateDate}\n";
 
 
