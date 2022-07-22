@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using SmartCities.API.Gira;
 using SmartCities.API.Gira.Data;
 using SmartCities.Managers;
@@ -11,6 +12,8 @@ public class TestAPI : MonoBehaviour
     [SerializeField] private float _localLatitude = 38.7684f;
     [SerializeField] private float _localLongitude = -9.094f;
     [SerializeField] private float scaleFactor = 10000;
+    [SerializeField] private ClippingSphere clippingSphere;
+
 
 
     [SerializeField] private GameObject poiPrefab;
@@ -65,12 +68,12 @@ public class TestAPI : MonoBehaviour
 
                 var ucs = GPSEncoder.GPSToUCS(lat, lon);
 
-                spawnLocation = new Vector3(ucs.x / scaleFactor*-1, ucs.y / scaleFactor*-1, ucs.z / scaleFactor);
+                spawnLocation = new Vector3(ucs.x / scaleFactor * -1, ucs.y / scaleFactor * -1, ucs.z / scaleFactor);
                 //debugText += $"Unity coordinate: {ucs}\n";
             }
 
             debugText += //$"IdExpl {giraStation.Properties.IdExpl}\n" +
-                //$"IdPlaneamento {giraStation.Properties.IdPlaneamento}\n" +
+                         //$"IdPlaneamento {giraStation.Properties.IdPlaneamento}\n" +
                 $"DesigComercial {giraStation.Properties.DesigComercial}\n";
             // $"TipoServicoNiveis {giraStation.Properties.TipoServicoNiveis}\n" +
             //$"NumBicicletas {giraStation.Properties.NumBicicletas}\n" +
@@ -94,6 +97,14 @@ public class TestAPI : MonoBehaviour
             poiGameObject.name = giraStation.Properties.DesigComercial;
             var poi = poiGameObject.GetComponent<Poi>();
             poi.UpdateText(debugText);
+
+            if (clippingSphere)
+            {
+                foreach (var renderer in poiGameObject.GetComponentsInChildren<Renderer>())
+                {
+                    clippingSphere.AddRenderer(renderer);
+                }
+            }
         }
     }
 }
